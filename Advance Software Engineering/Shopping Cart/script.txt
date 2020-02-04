@@ -1,0 +1,499 @@
+Script started on 2020-01-17 12:34:12-05:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="119" LINES="31"]
+]0;ravikanani@RaviKanani: ~/eclipse-workspace/excercise/src/excercise[01;32mravikanani@RaviKanani[00m:[01;34m~/eclipse-workspace/excercise/src/
+excercise[00m$ ls -l
+total 40
+-rw-r--r-- 1 ravikanani ravikanani 1107 Jan 17 00:26 Book.java
+-rw-r--r-- 1 ravikanani ravikanani 1240 Jan 17 00:27 GiftCard.java
+-rw-r--r-- 1 ravikanani ravikanani  505 Jan 17 00:10 Item.java
+-rw-r--r-- 1 ravikanani ravikanani 5990 Jan 17 12:33 [0m[01;31msc.jar[0m
+-rw-r--r-- 1 ravikanani ravikanani    0 Jan 17 12:40 script1.txt
+-rw-r--r-- 1 ravikanani ravikanani 9466 Jan 17 12:39 script.txt
+-rw-r--r-- 1 ravikanani ravikanani 3923 Jan 17 00:03 ShoppingCartApp.java
+-rw-r--r-- 1 ravikanani ravikanani 1554 Jan 17 12:32 ShoppingCart.java
+]0;ravikanani@RaviKanani: ~/eclipse-workspace/excercise/src/excercise[01;32mravikanani@RaviKanani[00m:[01;34m~/eclipse-workspace/excercise/src/excercise[00m$ cat *.java
+/*
+ * Book class is inherited from Item class 
+ * It contains author and title of the book and implementation of displayItem() method.
+ */
+
+package excercise;
+
+public class Book extends Item {									//inherits Item class
+	private String author;
+	private String title;
+	
+	public Book(String title, String author, int price) {				// constructor which will set data on new object creation
+		setTitle(title);
+		setAuthor(author);
+		setPrice(Math.abs(price));
+	}
+	
+	/* 
+	 * getters and setters for author, title and price
+	 */
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
+	/*
+	 * this method prints details of the single added book in shopping cart
+	 *
+	 */	
+	public void displayItem() {
+		System.out.println("Type: Book | ID: "+id+" | Title: " + getTitle() + " | Author:" + getAuthor() + " | Price: $" + getPrice());
+	}
+}
+/*
+ * GiftCard is inherited from the Item class 
+ * It contains description and colour of the Giftcard
+ */
+
+package excercise;
+
+public class GiftCard extends Item{									//inherits Item class
+	private String description;
+	private String colour;
+	
+	public GiftCard(String description, String colour, int price) {		// constructor which will set data on new object creation
+		setDescription(description);
+		setColour(colour);
+		setPrice(Math.abs(price));									// no negative price allowed
+	}
+	
+	/* 
+	 * getters and setters for description, colour and price
+	 */
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getColour() {
+		return colour;
+	}
+	public void setColour(String colour) {
+		this.colour = colour;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
+	/*
+	 * this method prints details of the added giftcard in shopping cart
+	 * @return void will print giftcard info
+	 */
+	public void displayItem() {
+		System.out.println("Type: Gift Card | ID: " + id + " | Description: " + getDescription() + " | Colour:" + getColour() + " | Price: $" + getPrice());
+	}
+}
+/*
+ * Item class is an abstract class which will be inherited by Book and GiftCard class
+ *  It contains id and price of Item. Id is autoincremented.
+ */
+
+package excercise;
+
+public abstract class Item {
+	private static int count = 0;				//static variable for auto increment id
+	int id;						
+	int price;
+	
+	public Item() {
+		this.id=++count; 						// autoincrements whenever class called and assign a unique id to each item
+	}
+	
+	public abstract void displayItem();			//abstract method to display item
+}
+/**
+* ShoppingCart project in which user can add item (Book, Gift Card),
+* see all items and and also remove it from the cart.
+*
+* @author  Ravi Kanani
+* @version 1.0
+* @since   2019-01-15
+*/
+
+package excercise;
+import java.util.Scanner;
+
+public class ShoppingCartApp {
+
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		
+		ShoppingCart cart=new ShoppingCart();       // shoppingcart instantiation
+		
+		int choice;
+		do {
+			/*
+			 * display a menu until user press 4 for exit
+			 */
+			System.out.println("1. Display all items");
+			System.out.println("2. Add an item");
+			System.out.println("3. Remove an item");
+			System.out.println("4. Exit");
+			System.out.print("Please select 1, 2, 3 or 4: ");		//user will enter 1,2,3 or 4
+			choice=Integer.parseInt(scan.nextLine());
+			System.out.println("<---------------------------------------------------------------------------->");
+			switch(choice) {
+			case 1:								// displays items in the shopping cart
+				cart.displayItems();
+				break;
+				
+			case 2:								// add item book or gift card
+				System.out.println("<-------------------- Add an item -------------------->");
+				System.out.println("Which item you want to add? book or gift card");
+				System.out.println("1. Book");
+				System.out.println("2. Gift Card");
+				System.out.print("Enter: ");
+				int select=Integer.parseInt(scan.nextLine());
+				switch(select) {
+				case 1:																// take input from user for book and add it to the cart
+					System.out.print("Enter title of the book: ");
+					String title=scan.nextLine();
+					
+					System.out.print("Enter name of the author: ");
+					String author=scan.nextLine();
+					
+					System.out.print("Enter price of the book: $");
+					int bookPrice=Integer.parseInt(scan.nextLine());
+					
+					Item addedBook=cart.addItem(new Book(title,author,bookPrice)); 		// adding book to the cart
+					System.out.print("Following book is added successfully -->");
+					addedBook.displayItem();										// notify user that this book is added.
+					break;
+				case 2:																	// get data from the user of gift card and add to the cart
+					System.out.print("Enter description of the gift card: ");
+					String description=scan.nextLine();
+					System.out.print("Enter colour of the gift card: ");
+					String colour=scan.nextLine();
+					System.out.print("Enter price of the gift card: $");
+					int cardPrice=Integer.parseInt(scan.nextLine());
+					Item addedGC=cart.addItem(new GiftCard(description,colour,cardPrice));		// adding gift card to the cart
+					System.out.println("Following gift card is added successfully -->");
+					addedGC.displayItem();												// notify user about added gift card
+					break;
+				default:													// for all other choices other than 1 and 2
+					System.out.println("Invalid choice.");
+				}
+				break;
+			
+			case 3:														// display all items and ask user to which item to delete 
+				if(cart.isEmpty()) {									// check if cart is empty
+					System.out.println("No items available.");
+				}else {
+					System.out.println("Which item you want to remove?");
+					cart.displayItems();								// displaying all items
+					System.out.print("Enter: ");
+					int itemNumber=Integer.parseInt(scan.nextLine());
+					Item removedItem=cart.removeItem(cart.getItems().get(itemNumber-1));		// remove item from the cart
+					System.out.println("Following item is removed successfully --> ");
+					removedItem.displayItem();													// notify user which item is removed.
+				}
+				break;
+				
+			case 4:
+				System.out.println("Good Bye.");							// Exit
+				break;
+				
+			default:														// default case for all other choices
+				System.out.println("Invalid choice");
+			}
+			System.out.println("<---------------------------------------------------------------------------->");
+		}while(choice!=4);
+		
+		scan.close();														// close the Scanner class
+	}
+}
+/**
+ * ShoppingCart class will maintain list of Items which will be added in the shopping cart
+ * It will also maintain total of the cart
+ */
+
+package excercise;
+
+import java.util.ArrayList;
+
+public class ShoppingCart {
+	private ArrayList<Item> items;			//store list of Items of shopping cart
+	private int total=0;
+	
+	public ShoppingCart() {
+		this.items=new ArrayList<Item>();
+	}
+	
+	public ArrayList<Item> getItems(){			// returns all items array
+		return items;
+	}
+	
+	/*
+	 * if cart is empty, it will return true else false
+	 */
+	public boolean isEmpty() {
+		return items.size()==0?true:false;
+	}
+	
+	/*
+	 * This method adds an Item to items list
+	 * @param item is parameter of Item type.
+	 * @return added item will be returned
+	 */
+	public Item addItem(Item item) {
+		this.items.add(item);
+		total+=item.price;
+		return item;
+	}
+	
+	/*
+	 * This method will remove an Item from items list
+	 * @param item is parameter of Item type
+	 * @return removed item will be returned
+	 */
+	public Item removeItem(Item item) {
+		this.items.remove(item);
+		total-=item.price;
+		return item;
+	}
+	
+	/*
+	 * This method will list all items in the cart with total price of it if it's not empty
+	 */
+	public void displayItems() {
+		if (isEmpty()) {
+			System.out.println("No Items. Please add one.");
+		}
+		else {
+			items.sort((o1, o2) -> o1.price - o2.price);				//sorting items list according to price
+			System.out.println("Total price: $" + total);
+			for(int i=0;i<items.size();i++) {
+				System.out.print((i+1)+". ");
+				items.get(i).displayItem();
+			}
+		}
+	}
+}
+]0;ravikanani@RaviKanani: ~/eclipse-workspace/excercise/src/
+excercise[00m$ exitjava -jar sc.jar 
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 1
+<---------------------------------------------------------------------------->
+No Items. Please add one.
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 1
+Enter title of the book: Data s      Algorithms
+Enter name of the author: Thomas H. Corman
+Enter price of the book: $30
+Following book is added successfully -->Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 2
+Enter description of the gift card: Happy Birthdat   y giftcard
+Enter colour of the gift card: yellow
+Enter price of the gift card: $3
+Following gift card is added successfully -->
+Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 1
+Enter title of the book: Dune
+Enter name of the author: Frank Herbert
+Enter price of the book: $22
+Following book is added successfully -->Type: Book | ID: 3 | Title: Dune | Author:Frank Herbert | Price: $22
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 2
+Enter description of the gift card: Anniversary gift c  card
+Enter colour of the gift card: pink
+Enter price of the gift card: $8
+Following gift card is added successfully -->
+Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 1
+Enter title of the book: The Lord of the Rings
+Enter name of the author: J. R. R. Tolkien
+Enter price of the book: $5
+Following book is added successfully -->Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 1
+<---------------------------------------------------------------------------->
+Total price: $68
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+4. Type: Book | ID: 3 | Title: Dune | Author:Frank Herbert | Price: $22
+5. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 3
+<---------------------------------------------------------------------------->
+Which item you want to remove?
+Total price: $68
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+4. Type: Book | ID: 3 | Title: Dune | Author:Frank Herbert | Price: $22
+5. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+Enter: 4
+Following item is removed successfully --> 
+Type: Book | ID: 3 | Title: Dune | Author:Frank Herbert | Price: $22
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 1
+<---------------------------------------------------------------------------->
+Total price: $46
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+4. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 2
+<---------------------------------------------------------------------------->
+<-------------------- Add an item -------------------->
+Which item you want to add? book or gift card
+1. Book
+2. Gift Card
+Enter: 2
+Enter description of the gift card: Valentine day giftcard
+Enter colour of the gift card: blue
+Enter price of the gift card: $13
+Following gift card is added successfully -->
+Type: Gift Card | ID: 6 | Description: Valentine day giftcard | Colour:blue | Price: $13
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 1
+<---------------------------------------------------------------------------->
+Total price: $59
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+4. Type: Gift Card | ID: 6 | Description: Valentine day giftcard | Colour:blue | Price: $13
+5. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 3
+<---------------------------------------------------------------------------->
+Which item you want to remove?
+Total price: $59
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+4. Type: Gift Card | ID: 6 | Description: Valentine day giftcard | Colour:blue | Price: $13
+5. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+Enter: 3
+Following item is removed successfully --> 
+Type: Gift Card | ID: 4 | Description: Anniversary giftcard | Colour:pink | Price: $8
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 1
+<---------------------------------------------------------------------------->
+Total price: $51
+1. Type: Gift Card | ID: 2 | Description: Happy Birthday giftcard | Colour:yellow | Price: $3
+2. Type: Book | ID: 5 | Title: The Lord of the Rings | Author:J. R. R. Tolkien | Price: $5
+3. Type: Gift Card | ID: 6 | Description: Valentine day giftcard | Colour:blue | Price: $13
+4. Type: Book | ID: 1 | Title: Algorithms | Author:Thomas H. Corman | Price: $30
+<---------------------------------------------------------------------------->
+1. Display all items
+2. Add an item
+3. Remove an item
+4. Exit
+Please select 1, 2, 3 or 4: 4
+<---------------------------------------------------------------------------->
+Good Bye.
+<---------------------------------------------------------------------------->
+]0;ravikanani@RaviKanani: ~/eclipse-workspace/excercise/src/excercise[01;32mravikanani@RaviKanani[00m:[01;34m~/eclipse-workspace/excercise/src/excercise[00m$ exit
+exit
+
+Script done on 2020-01-17 12:39:20-05:00 [COMMAND_EXIT_CODE="0"]
