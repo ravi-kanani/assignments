@@ -1,0 +1,17 @@
+Write a java program that can maintain a list of items. It will display a menu with the functionality to Add an item, and Display All Items (sorted in ascending order by price), and of course Exit.
+
+An Item is an abstract class that maintains a valid price (cannot be a negative number) and a unique id that is autoincremented for each item.
+
+A Book is an Item, it inherits Item. A book has an author name and title.
+
+A GiftCard is an Item, it inherits Item. A GiftCard has a description and a colour (both strings).
+
+Requirements: Code the files Item.java, Book.java, GiftCard.java and ShoppingCart.java files. (The Shopping Cart class maintains a list of Items of course!). You may need an additional class ShoppingCartApp.java to instantiate the shopping cart and contains the main method.
+
+Draw the UML Class and Sequence diagrams using a UML tool of your choice. (draw.io is such a free tool).
+
+Create a scriptfile using the script command to test and execute the program.
+
+Submit the following: PDF file containing the UML class and sequence diagrams of your program AND submit the 4 or 5 java files for your program, AND submit the script file that shows the compilation and execution steps of your program. Do not compress/archive your files, simply attach all the files one by one and submit them in one attempt.
+
+Please make sure your java programs are fully documented and use javadoc notation as much as possible.
